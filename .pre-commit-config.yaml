@@ -18,7 +18,7 @@ repos:
         args: ['--disable=C0301,W0221']
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.7.1
+    rev: v1.9.0
     hooks:
       - id: mypy
         additional_dependencies: [types-requests]
