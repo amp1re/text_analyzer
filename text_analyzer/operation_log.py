@@ -4,7 +4,7 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 
-from base import Base
+from .base import Base
 
 
 class OperationLog(Base):

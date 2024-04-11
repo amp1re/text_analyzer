@@ -2,23 +2,21 @@ from datetime import datetime
 from typing import List, Union
 
 from sqlalchemy.orm import Session
-from user_log import User
 
-from operation_log import OperationLog
+from .operation_log import OperationLog
+from .user import User
 
 
 class MLService:
-    def __init__(self, model, session_factory):
+    def __init__(self, model):
         self.model = model
-        self.session_factory = session_factory
 
-    def execute_task(self, user: User, text: str) -> Union[List[str], str]:
+    def execute_task(self, user: User, text: str, session) -> Union[List[str], str]:
         cost_of_operation = 1
         current_datetime = datetime.now()
-        session = self.session_factory()
 
         try:
-            if user.view_balance() < cost_of_operation:
+            if user.view_balance(session) < cost_of_operation:
                 status = "Denied"
                 self.log_operation(
                     session,

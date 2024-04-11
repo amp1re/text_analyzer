@@ -2,10 +2,8 @@ import hashlib
 import re
 import secrets
 
-from sqlalchemy import Boolean, Column, Float, Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy.orm import relationship
 
 from .base import Base
 
@@ -18,6 +16,7 @@ class User(Base):
     password = Column(String, nullable=False)
     balance = Column(Float, default=0.0)
     api_key = Column(String, unique=True)
+    operations = relationship("OperationLog", back_populates="user")
 
     def __init__(self, username, email, password, balance=0, api_key=None):
         self.username = username
