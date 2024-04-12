@@ -9,6 +9,7 @@ class MLModel:
             top_k=top_k,
         )
 
+
     def classify_text(self, text: str) -> list[dict]:
         try:
             model_outputs = self.model(text)
@@ -17,6 +18,3 @@ class MLModel:
                 for x in model_outputs[0]
             ]
             return results
-        except Exception as e:
-            print(f"An error occurred during classification: {str(e)}")
-            raise
