@@ -1,4 +1,14 @@
+# from transformers import pipeline
+import logging
+
+from transformers import logging as hf_logging
 from transformers import pipeline
+
+# Set the logging level using Hugging Face's logging utility
+hf_logging.set_verbosity_error()
+
+# Optionally, set the logging level using Python's logging library
+logging.getLogger("transformers").setLevel(logging.ERROR)
 
 
 class MLModel:

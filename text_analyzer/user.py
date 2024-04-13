@@ -5,7 +5,7 @@ import secrets
 from sqlalchemy import Column, Float, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from database import Base
 
 
 class User(Base):
