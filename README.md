@@ -26,3 +26,4 @@ These instructions will help you set up a local development instance of the Text
 git clone https://github.com/amp1re/text_analyzer.git
 cd text_analyzer
 
+
