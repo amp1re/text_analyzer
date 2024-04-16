@@ -4,7 +4,7 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.orm import relationship
 
-from database import Base
+from database import Base, engine
 
 
 class OperationLog(Base):
@@ -17,3 +17,6 @@ class OperationLog(Base):
     result = Column(JSON)
     cost_of_operation = Column(Float)
     timestamp = Column(DateTime, default=datetime.utcnow)
+
+
+Base.metadata.create_all(engine)
