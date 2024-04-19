@@ -2,16 +2,18 @@ import hashlib
 import re
 import secrets
 
+import bcrypt
 from sqlalchemy import Column, Float, Integer, String
 from sqlalchemy.orm import relationship
 
-from .base import Base
+from database import Base, engine
+from text_analyzer.operation_log import OperationLog
 
 
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
+    username = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     balance = Column(Float, default=0.0)
@@ -23,16 +25,16 @@ class User(Base):
         if not self._validate_email(email):
             raise ValueError("Invalid email format.")
         self.email = email
-        self.password = self._hash_password(password)
+        self.password = self._hash_password(password).decode("utf-8")
         self.balance = balance
 
     def _validate_email(self, email: str) -> bool:
         pattern = r"^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$"
         return re.match(pattern, email) is not None
 
-    def _hash_password(self, password: str) -> str:
-        salt = secrets.token_hex(16)
-        return hashlib.sha256((salt + password).encode()).hexdigest() + ":" + salt
+    def _hash_password(self, password: str) -> bytes:
+        salt = bcrypt.gensalt()
+        return bcrypt.hashpw(password.encode(), salt)
 
     def check_and_set_api_key(self, api_key, session):
         if self._check_unique_api_key(api_key, session):
@@ -72,3 +74,6 @@ class User(Base):
             potential_key = secrets.token_hex(32)
             if self._check_unique_api_key(potential_key, session):
                 return potential_key
+
+
+Base.metadata.create_all(engine)
